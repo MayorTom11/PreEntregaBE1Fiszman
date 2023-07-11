@@ -1,0 +1,55 @@
+[
+	{
+		"id": 1,
+		"title": "Fernet",
+		"description": "Fernet 750ml",
+		"price": 14500,
+		"thumbnail": "https://dummyimage.com/200x200/000/fff",
+		"code": "FRT750",
+		"stock": 20,
+		"category": "Apetizers"
+	},
+	{
+		"id": 2,
+		"title": "Campari",
+		"description": "Campari 750ml",
+		"price": 12500,
+		"thumbnail": "https://dummyimage.com/200x200/000/fff",
+		"code": "CPR750",
+		"stock": 15,
+		"category": "Apetizers"
+	},
+	{
+		"id": 3,
+		"title": "Skyy",
+		"description": "Skyy 750ml",
+		"price": 18500,
+		"thumbnail": "https://dummyimage.com/200x200/000/fff",
+		"code": "SKY750",
+		"stock": 14,
+		"category": "Apetizers"
+	},
+	{
+		"id": 4,
+		"title": "Gancia",
+		"description": "Gancia 950ml",
+		"price": 11500,
+		"thumbnail": "https://dummyimage.com/200x200/000/fff",
+		"code": "GIA950",
+		"stock": 12,
+		"category": "Apetizers"
+	},
+	{
+		"id": 5,
+		"title": {
+			"title": "Dv Catena Cabernet Malbec",
+			"description": "Dv Catena Cabernet Malbec 750ml",
+			"price": 1890,
+			"thumbnail": "https://dummyimage.com/200x200/000/fff",
+			"code": "DVCCM",
+			"stock": 15,
+			"category": "Wines"
+		},
+		"status": true
+	}
+]
