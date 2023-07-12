@@ -1,7 +1,7 @@
 import fs from "fs"
 import { ProductManager } from "./ProductManager.js"
 
-const productService = new ProductManager("../Primera Entrega BE/src/productos.json")
+const productService = new ProductManager("../Primera Entrega BE/src/data/productos.json")
 
 export class CartManager {
     constructor(route){
@@ -39,41 +39,25 @@ export class CartManager {
         
     }
 
-    async addCart(products){
+    async addCart(postCart){
+        const addCart = await this.readCarts()
         let newId = addCart.length 
                     ? addCart[addCart.length-1].id+1
                     : 1
-        // const productTitle = await productService.getProductById((product)=>{
-        //     if(product.id === productId){
-        //         return product.title
-        //     }else{
-        //         return error.message
-        //     }
-        // })
         const newCart = {
             id:newId,
-            products
+            products:[postCart]
         }
 
         try {
-            if(this.fileExists()){
-                const addCart = await this.readCarts()
-                const getId = addCart.find((idProductos)=>{return idProductos.id === products})
-                if(getId == undefined){
-                    return "El producto no fue encontrado"
-                }else{
-                    addCart.push(newCart)
-                    await fs.promises.writeFile(this.path,JSON.stringify(addCart,null,'\t'))
-                    return "Carrito Agregado"
-                }
-            }else{
-                await fs.promises.writeFile(this.path,JSON.stringify([newCart],null,'\t'))
-                return "Carrito Agregado"
-            }
+            addCart.push(newCart)
+            await fs.promises.writeFile(this.path,JSON.stringify(addCart,null,'\t'))
+            return "Carrito Agregado"
         } catch (error) {
             return error.message
         }
     }
+
     async getProductsInCart(CartId){
         try {
             const getCartById = await this.readCarts()
@@ -83,6 +67,19 @@ export class CartManager {
             }else{
                 return getId
             }
+        } catch (error) {
+            return error.message
+        }
+    }
+
+    async addProductsInCart(CartId){
+        try {
+            const getCartById = await this.readCarts()
+            const getId = getCartById.find((CartsId)=>{return CartsId.id === CartId})
+            getId.forEach(element => {
+                element = getId.slice(-1)
+                return element
+            })
         } catch (error) {
             return error.message
         }

@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { ProductManager } from "../ProductManager.js"
+import { ProductManager } from "../managers/ProductManager.js"
 
 const router = Router()
-const productService = new ProductManager("../Primera Entrega BE/src/productos.json")
+const productService = new ProductManager("../Primera Entrega BE/src/data/productos.json")
 
 router.get("/",async(req,res)=>{
     try {
@@ -27,9 +27,13 @@ router.get("/:productId",async(req,res)=>{
 
 router.post("/",async(req,res)=>{
     try {
-        const newProduct = req.body
-        await productService.addProduct(newProduct)
-        res.json({message:"Producto Agregado"})
+        const {title, description, price, thumbnail, code, stock, category,status} = req.body
+        await productService.addProduct({title, description, price, thumbnail, code, stock, category,status})
+        if(title == null || description == null || price == null || thumbnail == null || code == null || stock == null || category == null){
+            res.json({message:'Por favor, revisar todos los campos'})
+        }else{
+            res.json({message:"Producto Agregado"})
+        }
     } catch (error) {
         res.json(error.message)
     }

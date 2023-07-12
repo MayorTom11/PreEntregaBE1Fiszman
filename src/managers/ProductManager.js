@@ -37,39 +37,43 @@ export class ProductManager {
     }
 
     async addProduct(title, description, price, thumbnail, code, stock, category,status){
-        const addProduct = await this.readProducts()
-        let newId = addProduct.length 
-                    ? addProduct[addProduct.length-1].id+1
-                    : 1
-        const newProduct = {
-            id:newId,
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock,
-            category,
-            status:true
-        }
-
-        try {
-            if(this.fileExists()){
-                const getCode = addProduct.some((codes)=>{return codes.code === newProduct.code})
-                if(getCode == true){
-                    return "Este producto ya existe"
-                }else{
-                    addProduct.push(newProduct)
-                    await fs.promises.writeFile(this.path,JSON.stringify(addProduct,null,'\t'))
-                    return "Producto Agregado"
-                }                
-            }else{
-                console.log("El archivo no existe")
-                await fs.promises.writeFile(this.path,JSON.stringify([newProduct],null,'\t'))
-                console.log("Producto Agregado")
+        if(title == null || description == null || price == null || thumbnail == null || code == null || stock == null || category == null){
+            return 'Por favor, revisar todos los campos'
+        }else{
+            const addProduct = await this.readProducts()
+            let newId = addProduct.length 
+                        ? addProduct[addProduct.length-1].id+1
+                        : 1
+            const newProduct = {
+                id:newId,
+                title,
+                description,
+                price,
+                thumbnail,
+                code,
+                stock,
+                category,
+                status:true
             }
-        } catch (error) {
-            return error.message
+
+            try {
+                if(this.fileExists()){
+                    const getCode = addProduct.some((codes)=>{return codes.code === newProduct.code})
+                    if(getCode == true){
+                        return "Este producto ya existe"
+                    }else{
+                        addProduct.push(newProduct)
+                        await fs.promises.writeFile(this.path,JSON.stringify(addProduct,null,'\t'))
+                        return "Producto Agregado"
+                    }                
+                }else{
+                    console.log("El archivo no existe")
+                    await fs.promises.writeFile(this.path,JSON.stringify([newProduct],null,'\t'))
+                    console.log("Producto Agregado")
+                }
+            } catch (error) {
+                return error.message
+            }
         }
     }
 
@@ -111,6 +115,11 @@ export class ProductManager {
                 deleteProduct.splice(idProducto,1)
                 await fs.promises.writeFile(this.path,JSON.stringify(deleteProduct,null,'\t'))
                 console.log("productsJson: ",deleteProduct)
+                // deleteProduct.forEach((element) => {
+                //     if(element.id > id){
+                //         element.id -= 1
+                //     }
+                // });
             }else{
                 deleteProduct.splice(idProducto-1,1)
                 await fs.promises.writeFile(this.path,JSON.stringify(deleteProduct,null,'\t'))

@@ -1,24 +1,35 @@
 import { Router } from "express";
-import { CartManager } from "../CartManager.js";
+import { CartManager } from "../managers/CartManager.js";
 
 const router = Router()
-const cartService = new CartManager("../Primera Entrega BE/src/carritos.json")
+const cartService = new CartManager("../Primera Entrega BE/src/data/carritos.json")
 
-router.get("/",async(req,res)=>{
+router.post("/",async(req,res)=>{
     try {
-        const limit = req.query.limit
-        const getCarts = await cartService.getCarts()
-        const slice1 = getCarts.slice(0,limit)
-        limit == undefined ? res.json(getCarts) : res.json(slice1)
+        const postCart = req.body
+        await cartService.addCart(postCart)
+        res.json({message:"Carrito Agregado"})
     } catch (error) {
         res.json(error.message)
     }
 })
-router.post("/",async(req,res)=>{
+
+router.get("/:cartId",async(req,res)=>{
     try {
-        const newCart = req.body
-        await cartService.addCart(newCart)
-        res.json({message:"Carrito Agregado"})
+        const cartId = parseInt(req.params.cartId)
+        const getCartById = await cartService.getProductsInCart(cartId)
+        getCartById ? res.json(getCartById) : res.json("El carrito buscado no fue encontrado")
+    } catch (error) {
+        res.json(error.message)
+    }
+})
+
+router.get("/:cartId/product/:productId",async(req,res)=>{
+    try {
+        const cartId = parseInt(req.params.cartId)
+        const productId = parseInt(req.params.productId)
+        const addProductsInCart = await cartService.addProductsInCart(cartId, productId)
+        addProductsInCart ? res.json(addProductsInCart) : res.json("El carrito buscado no fue encontrado")
     } catch (error) {
         res.json(error.message)
     }
